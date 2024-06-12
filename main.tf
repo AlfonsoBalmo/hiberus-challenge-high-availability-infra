@@ -30,7 +30,7 @@ resource "aws_lambda_function" "my_lambda" {
   function_name = "hiberus-lambda"
   s3_bucket     = aws_s3_bucket.lambda_bucket.bucket
   s3_key        = var.lambda_s3_key
-  role          = "arn:aws:iam::YOUR_ACCOUNT_ID:role/lambda_exec_role"
+  role          = "arn:aws:iam::471112872744:role/lambda_exec_role"
   handler       = "handler.lambda_handler"
   runtime       = "python3.8"
 
