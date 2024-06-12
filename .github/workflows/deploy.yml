@@ -82,3 +82,8 @@ jobs:
 
       - name: Apply Terraform
         run: terraform apply -auto-approve
+        env:
+          TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
+          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+          TF_VAR_lambda_s3_bucket: "lambda-bucket-hiberus"
+          TF_VAR_lambda_s3_key: "lambda_function.zip"
