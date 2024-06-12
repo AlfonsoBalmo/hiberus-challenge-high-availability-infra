@@ -1,17 +1,17 @@
 provider "aws" {
-  region = "us-west-2"
+  region = "us-east-1"
 }
 
 resource "aws_db_instance" "default" {
   allocated_storage    = 20
   storage_type         = "gp2"
   engine               = "mysql"
-  engine_version       = "8.0"
-  instance_class       = "db.t2.micro"
+  engine_version       = "5.7.34"
+  instance_class       = "db.t3.micro"
   db_name              = "mydatabase"
   username             = var.db_username
   password             = var.db_password
-  parameter_group_name = "default.mysql8.0"
+  parameter_group_name = "default.mysql5.7"
   publicly_accessible  = false
   skip_final_snapshot  = true
 }
