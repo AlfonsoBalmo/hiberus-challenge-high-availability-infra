@@ -2,7 +2,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_db_instance" "default" {
+resource "aws_db_instance" "challenge-hiberus" {
   allocated_storage    = 20
   storage_type         = "gp2"
   engine               = "mysql"
