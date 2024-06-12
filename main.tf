@@ -2,6 +2,16 @@ provider "aws" {
   region = "us-east-1"
 }
 
+resource "aws_s3_bucket" "lambda_bucket" {
+  bucket = var.lambda_s3_bucket
+  acl    = "private"
+
+  tags = {
+    Name        = "lambda_bucket"
+    Environment = "Dev"
+  }
+}
+
 resource "aws_db_instance" "default" {
   allocated_storage    = 20
   storage_type         = "gp2"
@@ -18,10 +28,11 @@ resource "aws_db_instance" "default" {
 
 resource "aws_lambda_function" "my_lambda" {
   function_name = "hiberus-lambda"
-  role          = "arn:aws:iam::471112872744:role/lambda_exec_role"
+  s3_bucket     = aws_s3_bucket.lambda_bucket.bucket
+  s3_key        = var.lambda_s3_key
+  role          = "arn:aws:iam::YOUR_ACCOUNT_ID:role/lambda_exec_role"
   handler       = "handler.lambda_handler"
   runtime       = "python3.8"
-  filename      = "lambda_function.zip"
 
   environment {
     variables = {

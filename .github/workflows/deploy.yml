@@ -6,19 +6,42 @@ on:
       - main
 
 jobs:
-  deploy:
+  build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Package Lambda function
+        run: |
+          mkdir -p package
+          cp handler.py package/
+          pip install -r requirements.txt -t package/
+          cd package
+          zip -r ../lambda_function.zip .
+          cd ..
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
+          aws-region: us-east-1
+
+      - name: Upload Lambda package to S3
+        run: |
+          aws s3 cp lambda_function.zip s3://my-lambda-bucket/lambda_function.zip
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
@@ -31,3 +54,5 @@ jobs:
         env:
           TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
           TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+          TF_VAR_lambda_s3_bucket: "my-lambda-bucket"
+          TF_VAR_lambda_s3_key: "lambda_function.zip"
