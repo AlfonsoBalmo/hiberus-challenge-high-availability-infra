@@ -13,7 +13,7 @@ variable "db_password" {
 variable "lambda_s3_bucket" {
   description = "The S3 bucket where the Lambda package is stored"
   type        = string
-  default     = "lambda-bucket-hiberus"  # Asegúrate de que este nombre sea único
+  default     = "my-lambda-bucket"
 }
 
 variable "lambda_s3_key" {
