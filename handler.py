@@ -4,6 +4,7 @@ import pymysql
 from pymysql.cursors import DictCursor
 
 def lambda_handler(event, context):
+    connection = None
     try:
         # Establecer la conexión con la base de datos utilizando variables de entorno
         connection = pymysql.connect(
