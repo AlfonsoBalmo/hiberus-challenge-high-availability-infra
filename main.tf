@@ -2,12 +2,11 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_s3_bucket" "lambda-bucket-hiberus" {
+resource "aws_s3_bucket" "lambda_bucket" {
   bucket = var.lambda_s3_bucket
-  acl    = "private"
 
   tags = {
-    Name        = "lambda-bucket-hiberus"
+    Name        = "lambda_bucket"
     Environment = "Dev"
   }
 }
