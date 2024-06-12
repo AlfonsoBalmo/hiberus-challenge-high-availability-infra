@@ -18,7 +18,7 @@ resource "aws_db_instance" "default" {
 
 resource "aws_lambda_function" "my_lambda" {
   function_name = "hiberus-lambda"
-  role          = "arn:aws:iam::YOUR_ACCOUNT_ID:role/lambda_exec_role"
+  role          = "arn:aws:iam::471112872744:role/lambda_exec_role"
   handler       = "handler.lambda_handler"
   runtime       = "python3.8"
   filename      = "lambda_function.zip"
