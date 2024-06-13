@@ -8,8 +8,12 @@ data "aws_vpc" "selected" {
 }
 
 # Subnets - actualiza con las subnets de tu VPC existente
-data "aws_subnet_ids" "selected" {
-  vpc_id = data.aws_vpc.selected.id
+data "aws_subnet" "subnet1" {
+  id = "subnet-0123456789abcdef0" # Reemplaza con tu subnet ID
+}
+
+data "aws_subnet" "subnet2" {
+  id = "subnet-abcdef0123456789" # Reemplaza con tu subnet ID
 }
 
 # Security Group for RDS
@@ -53,7 +57,7 @@ resource "aws_security_group" "lambda_sg" {
 # DB Subnet Group
 resource "aws_db_subnet_group" "default" {
   name       = "my-db-subnet-group"
-  subnet_ids = data.aws_subnet_ids.selected.ids
+  subnet_ids = [data.aws_subnet.subnet1.id, data.aws_subnet.subnet2.id]
 
   tags = {
     Name = "my-db-subnet-group"
@@ -74,7 +78,7 @@ resource "aws_db_instance" "default" {
   publicly_accessible  = false
   skip_final_snapshot  = true
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
-  subnet_group_name = aws_db_subnet_group.default.name
+  db_subnet_group_name  = aws_db_subnet_group.default.name
 }
 
 # IAM Role for Lambda
@@ -124,7 +128,7 @@ resource "aws_lambda_function" "my_lambda" {
   handler       = "handler.lambda_handler"
   runtime       = "python3.8"
   vpc_config {
-    subnet_ids         = data.aws_subnet_ids.selected.ids
+    subnet_ids         = [data.aws_subnet.subnet1.id, data.aws_subnet.subnet2.id]
     security_group_ids = [aws_security_group.lambda_sg.id]
   }
   environment {
@@ -144,20 +148,20 @@ resource "aws_apigatewayv2_api" "api" {
 }
 
 resource "aws_apigatewayv2_integration" "lambda" {
-  api_id = aws_apigatewayv2_api.api.id
-  integration_type = "AWS_PROXY"
-  integration_uri = aws_lambda_function.my_lambda.invoke_arn
+  api_id             = aws_apigatewayv2_api.api.id
+  integration_type   = "AWS_PROXY"
+  integration_uri    = aws_lambda_function.my_lambda.invoke_arn
 }
 
 resource "aws_apigatewayv2_route" "lambda" {
-  api_id = aws_apigatewayv2_api.api.id
+  api_id   = aws_apigatewayv2_api.api.id
   route_key = "GET /"
-  target = "integrations/${aws_apigatewayv2_integration.lambda.id}"
+  target    = "integrations/${aws_apigatewayv2_integration.lambda.id}"
 }
 
 resource "aws_apigatewayv2_stage" "default" {
-  api_id = aws_apigatewayv2_api.api.id
-  name = "$default"
+  api_id     = aws_apigatewayv2_api.api.id
+  name       = "$default"
   auto_deploy = true
 }
 
