@@ -68,24 +68,17 @@ jobs:
       - name: List files in the directory
         run: ls -la
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          python-version: '3.x'
+          node-version: '14'
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+        run: npm install
 
       - name: Package Lambda function
         run: |
-          mkdir -p package
-          cp handler.py package/
-          pip install -r requirements.txt -t package/
-          cd package
-          zip -r ../lambda_function.zip .
-          cd ..
+          zip -r lambda_function.zip .
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
