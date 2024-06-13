@@ -1,15 +1,15 @@
-const express = require('express');
-const db = require('./database');
+import express from "express";
+import { pool } from "./database.js";
 
 const app = express();
 
-app.get('/', async (req, res) => {
-    try {
-        const result = await db.query('SELECT * FROM mytable');
-        res.json(result);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+app.get("/ping", async (req, res) => {
+  try {
+    const [result] = await pool.query(`SELECT NOW() as now`);
+    return res.json(result[0]);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
-module.exports = app;
+export default app;

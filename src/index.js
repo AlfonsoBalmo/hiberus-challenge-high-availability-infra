@@ -1,6 +1,5 @@
-const app = require('./app');
-const config = require('./config');
+import app from "./app.js";
+import "./database.js";
 
-app.listen(config.port, () => {
-    console.log(`Server running on port ${config.port}`);
-});
+app.listen(3000);
+console.log("Server on port", 3000);
