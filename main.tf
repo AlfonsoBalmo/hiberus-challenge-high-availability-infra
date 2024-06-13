@@ -21,8 +21,8 @@ resource "aws_lambda_function" "my_lambda" {
   s3_bucket     = var.lambda_s3_bucket
   s3_key        = var.lambda_s3_key
   role          = "arn:aws:iam::471112872744:role/lambda_exec_role"
-  handler       = "handler.lambda_handler"
-  runtime       = "python3.8"
+  handler       = "src/index.handler"
+  runtime       = "nodejs14.x"
 
   environment {
     variables = {
@@ -30,6 +30,7 @@ resource "aws_lambda_function" "my_lambda" {
       DB_NAME     = "hiberus"
       DB_USER     = var.db_username
       DB_PASSWORD = var.db_password
+      PORT        = "3000"
     }
   }
 }
