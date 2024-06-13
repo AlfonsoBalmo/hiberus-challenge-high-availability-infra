@@ -17,7 +17,7 @@ resource "aws_db_instance" "default" {
 }
 
 resource "aws_lambda_function" "my_lambda" {
-  function_name = "hiberus-lambda-234"
+  function_name = "hiberus-lambda-2345"
   s3_bucket     = var.lambda_s3_bucket
   s3_key        = var.lambda_s3_key
   role          = "arn:aws:iam::471112872744:role/lambda_exec_role"
