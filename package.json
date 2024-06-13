@@ -1,0 +1,18 @@
+
+**package.json**
+```json
+{
+  "name": "myapp",
+  "version": "1.0.0",
+  "description": "My Node.js application",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5"
+  },
+  "author": "Alfonso",
+  "license": "MIT"
+}
