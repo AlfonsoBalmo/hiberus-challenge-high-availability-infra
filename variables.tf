@@ -13,7 +13,7 @@ variable "db_password" {
 variable "lambda_s3_bucket" {
   description = "The S3 bucket where the Lambda package is stored"
   type        = string
-  default     = "my-lambda-bucket"
+  default     = "unique-lambda-bucket-abcdef123456"
 }
 
 variable "lambda_s3_key" {
