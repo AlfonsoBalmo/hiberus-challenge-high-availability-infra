@@ -22,7 +22,7 @@ resource "aws_lambda_function" "my_lambda" {
   s3_key        = var.lambda_s3_key
   role          = "arn:aws:iam::471112872744:role/lambda_exec_role"
   handler       = "src/index.handler"
-  runtime       = "nodejs14.x"
+  runtime       = "nodejs20.x"
 
   environment {
     variables = {
